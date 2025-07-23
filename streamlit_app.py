@@ -9,37 +9,47 @@ import base64
 # --- Page Config ---
 st.set_page_config(page_title="Equiscope - AI Startup Valuation", layout="wide")
 
-# --- Custom Theme Styling ---
+# --- Custom Styling to Match Screenshot Exactly (White + Blue theme) ---
 st.markdown('''
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+
     html, body, .main, .block-container {
         background-color: #ffffff;
-        color: #000000;
+        color: #1d1d1f;
         font-family: 'Montserrat', sans-serif;
     }
     .stButton > button {
-        background-color: #ff4b4b !important;
+        background-color: #007aff !important;
         color: white !important;
-        border: none;
-        border-radius: 10px;
-        padding: 0.6em 1.4em;
         font-weight: 600;
+        padding: 0.7em 1.5em;
+        border-radius: 8px;
+        border: none;
+        transition: 0.3s ease;
+    }
+    .stButton > button:hover {
+        background-color: #005ac1 !important;
     }
     .stTextInput>div>div>input, .stNumberInput>div>div>input {
-        background-color: #f5f5f5;
-        color: black;
-        border: 1px solid #ddd;
-        border-radius: 8px;
+        background-color: #f0f0f0;
+        color: #000;
+        border-radius: 6px;
+        border: 1px solid #ccc;
         padding: 0.5em;
     }
     .stSlider > div > div > div {
-        background: #ff4b4b;
+        background: #007aff;
     }
-    .sidebar .sidebar-content {
-        background-color: #ffffff;
+    .sidebar .sidebar-content, .css-6qob1r.e1fqkh3o3 {
+        background-color: #ffffff !important;
+        color: #1d1d1f !important;
     }
-    h1, h2, h4, p, li {
+    h1, h2, h3, h4, h5, h6, p, li {
         font-family: 'Montserrat', sans-serif;
+    }
+    .css-1d391kg, .css-1v0mbdj, .css-1v3fvcr {
+        background-color: #ffffff !important;
     }
     </style>
 ''', unsafe_allow_html=True)
@@ -51,8 +61,11 @@ if "logged_in" not in st.session_state:
 
 if not st.session_state.logged_in:
     with st.form("login_form"):
-        st.image("https://cdn-icons-png.flaticon.com/512/4052/4052984.png", width=80)
-        st.markdown("## 🔐 Login to Equiscope")
+        st.image("https://cdn-icons-png.flaticon.com/512/4052/4052984.png", width=100)
+        st.markdown("""
+            <h2 style='text-align:center; color:#007aff;'>Welcome to Equiscope</h2>
+            <p style='text-align:center;'>AI Startup Valuation Platform</p>
+        """, unsafe_allow_html=True)
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
         submitted = st.form_submit_button("Login")
@@ -65,9 +78,11 @@ if not st.session_state.logged_in:
     st.stop()
 
 # --- Sidebar Navigation ---
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/4052/4052984.png", width=50)
-st.sidebar.title("Equiscope")
-page = st.sidebar.radio("📁 Pages", ["Valuation Estimator", "Analytics Dashboard", "Comparable Startups", "Download Report", "About Project"])
+st.sidebar.image("https://cdn-icons-png.flaticon.com/512/4052/4052984.png", width=60)
+st.sidebar.markdown("""
+    <h2 style='color:#007aff;'>Equiscope</h2>
+""", unsafe_allow_html=True)
+page = st.sidebar.radio("", ["Valuation Estimator", "Analytics Dashboard", "Comparable Startups", "Download Report", "About Project"])
 
 # --- Sample Dataset ---
 data = {
@@ -88,8 +103,8 @@ model.fit(X, y)
 # --- Valuation Estimator ---
 if page == "Valuation Estimator":
     st.markdown("""
-        <h1 style='text-align:center;'>📈 <span style='color:#ff4b4b;'>Startup Valuation Estimator</span></h1>
-        <p style='text-align:center;color:#666;'>Fill in your startup's details to estimate its valuation.</p>
+        <h1 style='text-align:center;'>📈 <span style='color:#007aff;'>Startup Valuation Estimator</span></h1>
+        <p style='text-align:center;'>Fill in your startup's details to estimate its valuation.</p>
     """, unsafe_allow_html=True)
 
     with st.form("input_form"):
@@ -117,8 +132,8 @@ if page == "Valuation Estimator":
 # --- Analytics Dashboard ---
 elif page == "Analytics Dashboard":
     st.markdown("""
-        <h1 style='text-align:center;'>📊 <span style='color:#ff4b4b;'>Valuation Analytics</span></h1>
-        <p style='text-align:center;color:#666;'>Interactive visualizations to explore startup metrics.</p>
+        <h1 style='text-align:center;'>📊 <span style='color:#007aff;'>Valuation Analytics</span></h1>
+        <p style='text-align:center;'>Interactive visualizations to explore startup metrics.</p>
     """, unsafe_allow_html=True)
 
     col1, col2 = st.columns(2)
@@ -132,8 +147,8 @@ elif page == "Analytics Dashboard":
 # --- Comparable Startups ---
 elif page == "Comparable Startups":
     st.markdown("""
-        <h1 style='text-align:center;'>🔍 <span style='color:#ff4b4b;'>Comparable Startups</span></h1>
-        <p style='text-align:center;color:#666;'>Similar startups to benchmark your valuation.</p>
+        <h1 style='text-align:center;'>🔍 <span style='color:#007aff;'>Comparable Startups</span></h1>
+        <p style='text-align:center;'>Similar startups to benchmark your valuation.</p>
     """, unsafe_allow_html=True)
 
     st.dataframe(df.style.highlight_max(axis=0).format("{:.2f}"))
@@ -141,8 +156,8 @@ elif page == "Comparable Startups":
 # --- Report Download ---
 elif page == "Download Report":
     st.markdown("""
-        <h1 style='text-align:center;'>📄 <span style='color:#ff4b4b;'>Export Valuation Report</span></h1>
-        <p style='text-align:center;color:#666;'>Download your input and estimated valuation for records.</p>
+        <h1 style='text-align:center;'>📄 <span style='color:#007aff;'>Export Valuation Report</span></h1>
+        <p style='text-align:center;'>Download your input and estimated valuation for records.</p>
     """, unsafe_allow_html=True)
 
     report_df = df.copy()
@@ -154,18 +169,18 @@ elif page == "Download Report":
 # --- About Page ---
 elif page == "About Project":
     st.markdown("""
-        <h1 style='text-align:center;'>📘 <span style='color:#ff4b4b;'>About Equiscope</span></h1>
-        <p style='text-align:center;color:#666;'>An AI-powered tool built to help estimate startup valuation.</p>
+        <h1 style='text-align:center;'>📘 <span style='color:#007aff;'>About Equiscope</span></h1>
+        <p style='text-align:center;'>An AI-powered tool built to help estimate startup valuation.</p>
         <hr>
-        <h4 style='color:#ff4b4b;'>💡 Features</h4>
+        <h4 style='color:#007aff;'>💡 Features</h4>
         <ul>
             <li>Secure login with user management</li>
             <li>AI-based valuation prediction</li>
             <li>Interactive analytics dashboard</li>
             <li>Comparable startups section</li>
             <li>Export report functionality</li>
-            <li>Clean white-red UI for professionalism</li>
+            <li>Clean white-blue UI to match case study theme</li>
         </ul>
-        <h4 style='color:#ff4b4b;'>👤 Built By</h4>
+        <h4 style='color:#007aff;'>👤 Built By</h4>
         <p>Arya Shinde, 2025</p>
     """, unsafe_allow_html=True)
